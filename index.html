@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In to Your Account</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use a custom color for the purple brand color (similar to BlueViolet) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-purple': '#8A2BE2', // BlueViolet for branding
+                        'input-light': '#F4F7FF', // Very light blue/lavender for input background
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for the password toggle icon */
+        .password-toggle-icon {
+            cursor: pointer;
+            @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md bg-white p-8 sm:p-10 rounded-xl shadow-lg">
+
+        <!-- Header and Icon Section -->
+        <div class="text-center mb-10">
+            <!-- Padlock Icon (Inline SVG) - Styled in purple -->
+            <div class="mx-auto w-12 h-12 flex items-center justify-center bg-custom-purple bg-opacity-10 rounded-full mb-6">
+                <svg class="w-6 h-6 text-custom-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6-6v4h12V9a4 4 0 00-4-4H8a4 4 0 00-4 4v0z"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Sign in to your account</h1>
+            <p class="text-sm text-gray-500">Access the Maximizer Dashboard</p>
+        </div>
+
+        <!-- Form Section -->
+        <form class="space-y-6" onsubmit="handleLogin(event)">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                <div class="mt-1">
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                           class="appearance-none block w-full px-4 py-3 border border-indigo-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-purple focus:border-custom-purple sm:text-base bg-input-light transition duration-150 ease-in-out"
+                           value="ozih@anolipi.com">
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="mt-1 relative">
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                           class="appearance-none block w-full px-4 py-3 border border-indigo-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-purple focus:border-custom-purple sm:text-base bg-input-light pr-10 transition duration-150 ease-in-out"
+                           value="********">
+
+                    <!-- Visibility Toggle Icon (Eye) -->
+                    <span id="togglePassword" class="password-toggle-icon" onclick="toggleVisibility()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path id="eyePath" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path id="slashPath" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-semibold text-white bg-custom-purple hover:bg-custom-purple/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom-purple transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <!-- Message Box for Alert replacement -->
+        <div id="messageBox" class="hidden mt-6 p-4 rounded-lg text-sm font-medium text-center bg-green-100 text-green-800 transition duration-300">
+            <!-- Messages will appear here -->
+        </div>
+
+    </div>
+
+    <script>
+        // Function to replace alert() with a custom message box
+        function displayMessage(message, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+            messageBox.className = 'mt-6 p-4 rounded-lg text-sm font-medium text-center transition duration-300';
+            
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-100', 'text-green-800');
+            } else if (type === 'error') {
+                messageBox.classList.add('bg-red-100', 'text-red-800');
+            }
+            messageBox.classList.remove('hidden');
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000);
+        }
+        
+        // Form submission handler
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            if (email && password) {
+                displayMessage(`Attempting to sign in with ${email}...`, 'success');
+                // In a real application, you would send this data to a server here.
+            } else {
+                displayMessage("Please enter both email and password.", 'error');
+            }
+        }
+
+        // Password visibility toggle
+        function toggleVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyePath = document.getElementById('eyePath');
+            const slashPath = document.getElementById('slashPath');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Change icon to 'visible' (remove the slash path)
+                slashPath.setAttribute('d', 'M0 0h24v24H0z'); // Clear the slash path
+            } else {
+                passwordInput.type = 'password';
+                // Change icon back to 'hidden' (show the slash path)
+                slashPath.setAttribute('d', 'M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z');
+            }
+        }
+    </script>
+</body>
+</html>
